@@ -9,7 +9,7 @@ import java.util.Random;
 public class Berry extends Fruit implements Consumable {
 
     public Berry(Position position) {
-        super(position, new Dimension(20, 20), "./berry.png");
+        super(position, new Dimension(20, 20), "./resources/berry.png");
         tag = "berry";
         setIsTransparent(true);
     }

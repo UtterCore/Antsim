@@ -7,7 +7,7 @@ public class AntEgg extends Egg {
     private int hatchTimer;
 
     public AntEgg(Position position) {
-        super(position, new Dimension(10, 20), "./egg.png");
+        super(position, new Dimension(10, 20), "./resources/egg.png");
 
         tag = "ant_egg";
         setEnergy(30);

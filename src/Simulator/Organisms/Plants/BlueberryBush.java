@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class BlueberryBush extends Plant {
     public BlueberryBush(Position position) {
-        super(position, new Dimension(40, 40), "./bbb.png");
+        super(position, new Dimension(40, 40), "./resources/bbb.png");
     }
 
     @Override

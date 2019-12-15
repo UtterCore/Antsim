@@ -40,7 +40,7 @@ public class Ant extends Creature {
 
 
     public Ant(Position position) {
-        super(position, new Dimension(20, 20), "./antU.png");
+        super(position, new Dimension(20, 20), "./resources/antU.png");
         tag = "blep";
 
         id = World.ants++;

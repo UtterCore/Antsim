@@ -27,7 +27,7 @@ public class Model {
         creatures = new ArrayList<>();
         items = new ArrayList<>();
 
-        addEntity(new Background("bg.png"));
+        addEntity(new Background("./resources/bg.png"));
 
 
         /*

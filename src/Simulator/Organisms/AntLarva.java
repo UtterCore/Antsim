@@ -7,7 +7,7 @@ public class AntLarva extends Larvae {
 
 
     public AntLarva(Position position) {
-        super(position, new Dimension(15, 25), "./antlarvae.png");
+        super(position, new Dimension(15, 25), "./resources/antlarvae.png");
 
         tag = "ant_larva";
         setEnergy(30);
