@@ -6,12 +6,21 @@ public class Organism extends GameEntity {
 
     private TouchSensor touch;
     private int energy;
+    private boolean isEdible;
 
     public Organism(Position position, Dimension dimension, String spritePath) {
         super(position, dimension, spritePath);
 
         setIsTransparent(true);
         touch = new TouchSensor(this);
+    }
+
+    public boolean isEdible() {
+        return isEdible;
+    }
+
+    public void setEdible(boolean edible) {
+        isEdible = edible;
     }
 
     public TouchSensor getTouch() {

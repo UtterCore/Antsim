@@ -57,13 +57,13 @@ public class Model {
         Ant oldAntM = new Ant(new Position(565, 400));
         oldAntM.setAge(3);
         oldAntM.setMatingTimer(0);
-        oldAntM.setEnergy(60);
+        oldAntM.setEnergy(600);
         addEntity(oldAntM);
 
         Ant oldAntF = new Ant(new Position(565, 400));
         oldAntF.setAge(3);
         oldAntF.setMatingTimer(0);
-        oldAntF.setEnergy(60);
+        oldAntF.setEnergy(600);
         addEntity(oldAntF);
 
         addEntity(new Wall(new Position(520, 200)));

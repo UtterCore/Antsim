@@ -13,7 +13,7 @@ public class Ant extends Creature {
     //Constants
     private static final int EAT_TIMER_MAX = 100;
     private static final int FEED_TIMER_MAX = 80;
-    private static final int STARVE_TIMER_MAX = 120;
+    private static final int STARVE_TIMER_MAX = 420;
 
     private static final int AGE_TIMER_MAX = 1300;
     private static final int ANT_INITIAL_ENERGY = 30;
@@ -129,7 +129,7 @@ public class Ant extends Creature {
     public void setIsDead(boolean b) {
         super.setIsDead(b);
         if (b) {
-            setSprite(loadSprite("./antDeadU.png"));
+            setSprite(loadSprite("./resources/antDeadU.png"));
         }
     }
 
@@ -261,6 +261,7 @@ public class Ant extends Creature {
         GameEntity wantedItem = null;
         for (GameEntity entity : getVisibleObjects()) {
 
+            //feed
             if (soughtItem == null && !isHungry()) {
                 if (entity instanceof Ant && ((Ant) entity).isHungry()) {
                     wantedItem = entity;
@@ -294,16 +295,16 @@ public class Ant extends Creature {
         if (wantedItem != null) {
             if (collidesWith(wantedItem)) {
 
-                if (wantedItem instanceof Berry ||
-                        (wantedItem instanceof Creature && wantedItem.tag.equals("berry"))) {
-
+                //if (wantedItem instanceof Berry ||
+                  //      (wantedItem instanceof Creature && wantedItem.tag.equals("berry"))) {
+                if (wantedItem instanceof Organism && ((Organism) wantedItem).isEdible()) {
                         eatItem((Organism)wantedItem);
                 } else if (wantedItem instanceof Ant && (!wantedItem.tag.equals("berry"))) {
 
                     if (currentBehavior.equals("feed")) {
                         feed((Ant)wantedItem);
 
-                    } else if (currentBehavior.equals("mate")){
+                    } else if (currentBehavior.equals("mate")) {
                         if (((Ant) wantedItem).canMate()) {
                             mateWith((Ant) wantedItem);
                         }

@@ -30,6 +30,7 @@ public abstract class Creature extends Organism {
         eye = new Eye(this);
         mouth = new Mouth(this);
 
+        setEdible(false);
         setIsDead(false);
     }
 
@@ -172,6 +173,9 @@ public abstract class Creature extends Organism {
 
     @Override
     public void update() {
+        if (isDead) {
+            setEdible(true);
+        }
         updateCreatureStatus();
 
         if (!getIsDead()) {

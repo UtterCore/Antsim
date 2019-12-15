@@ -7,16 +7,14 @@ import java.util.Random;
 public class Egg extends Creature {
 
     private boolean isHatched;
-    private Legs legs;
 
     public Egg(Position position, Dimension dimension, String spritePath) {
         super(position, dimension, spritePath);
-        legs = new Legs(this);
 
         Random random = new Random();
 
         if (random.nextBoolean()) {
-            legs.rotate(RIGHT);
+            getLegs().rotate(RIGHT);
         }
     }
 

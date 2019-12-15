@@ -14,6 +14,7 @@ public class Fruit extends Organism {
     public Fruit(Position position, Dimension dimension, String spritePath) {
         super(position, dimension, spritePath);
 
+        setEdible(true);
         decayTimer = DECAY_TIMER_MAX;
     }
 
