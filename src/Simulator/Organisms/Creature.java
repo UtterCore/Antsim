@@ -179,7 +179,11 @@ public abstract class Creature extends Organism {
         updateCreatureStatus();
 
         if (!getIsDead()) {
-            creatureBehavior();
+            try {
+                creatureBehavior();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

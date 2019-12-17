@@ -13,7 +13,7 @@ public class Ant extends Creature {
     //Constants
     private static final int EAT_TIMER_MAX = 100;
     private static final int FEED_TIMER_MAX = 80;
-    private static final int STARVE_TIMER_MAX = 420;
+    private static final int STARVE_TIMER_MAX = 120;
 
     private static final int AGE_TIMER_MAX = 1300;
     private static final int ANT_INITIAL_ENERGY = 30;
@@ -152,14 +152,9 @@ public class Ant extends Creature {
         }
         if (getMatingTimer() <= 0) {
 
-            //Random random = new Random();
-           // if (random.nextBoolean()) {
-                if (soughtItem == null) {
-                    soughtItem = "blep";
-                    currentBehavior = "mate";
-                    searchPriority = 10;
-                }
-           // }
+            currentBehavior = "mate";
+            searchPriority = 10;
+
         }
     }
 
@@ -213,14 +208,14 @@ public class Ant extends Creature {
         }
 
         if (getEnergy() < 60) {
-            if (soughtItem == null) {
-                soughtItem = "berry";
+            if (currentBehavior == null) {
+                currentBehavior = "eat";
                 searchPriority = 10;
             }
         }
 
         if (getEnergy() < 30) { //override all other desires
-            soughtItem = "berry";
+            currentBehavior = "eat";
             searchPriority = 7;
         }
 
@@ -232,15 +227,16 @@ public class Ant extends Creature {
 
     @Override
     protected void updateCreatureStatus() {
+        currentBehavior = null;
        // soughtItem = null;
 
 
         if (!getIsDead()) {
-            handleHunger();
-            handleAging();
             if (getAge() > MATURITY_AGE) {
                 handleMating();
             }
+            handleHunger();
+            handleAging();
         }
     }
 
@@ -256,62 +252,66 @@ public class Ant extends Creature {
 
     @Override
     protected void creatureBehavior() {
+
         setVisibleObjects(useEye());
+
+        if (shouldWait) {
+            //if crisis, do not wait
+            shouldWait = false;
+            if (!isStarving()) {
+                return;
+            }
+        }
 
         GameEntity wantedItem = null;
         for (GameEntity entity : getVisibleObjects()) {
 
             //feed
-            if (soughtItem == null && !isHungry()) {
+            if (!isHungry()) {
                 if (entity instanceof Ant && ((Ant) entity).isHungry()) {
                     wantedItem = entity;
-                    soughtItem = "blep";
                     currentBehavior = "feed";
                     doMatingCall((Ant) entity);
                 }
+                //if is hungry
+            } else {
+                if (entity instanceof Organism) {
+                    if (((Organism) entity).isEdible()) {
+                        wantedItem = entity;
+                    }
+                }
             }
-            if (entity.tag.equals(soughtItem)) {
-                wantedItem = entity;
 
-                if (wantedItem instanceof Ant && (!wantedItem.tag.equals("berry"))) {
-                    if (((Ant) wantedItem).getAge() > MATURITY_AGE) {
+            if (currentBehavior == "mate") {
+                if (entity instanceof Ant) {
+                    if (((Ant) entity).getAge() > MATURITY_AGE) {
                         doMatingCall((Ant) entity);
                     }
                 }
-                break;
             }
         }
 
-        if (shouldWait) {
-
-            //if crisis, do not wait
-
-            shouldWait = false;
-
-            if (!isStarving()) {
-                return;
-            }
-        }
         if (wantedItem != null) {
             if (collidesWith(wantedItem)) {
 
-                //if (wantedItem instanceof Berry ||
-                  //      (wantedItem instanceof Creature && wantedItem.tag.equals("berry"))) {
-                if (wantedItem instanceof Organism && ((Organism) wantedItem).isEdible()) {
-                        eatItem((Organism)wantedItem);
-                } else if (wantedItem instanceof Ant && (!wantedItem.tag.equals("berry"))) {
-
+                if (wantedItem instanceof Organism
+                        && currentBehavior.equals("eat")
+                        && ((Organism) wantedItem).isEdible()) {
+                    eatItem((Organism) wantedItem);
+                    //System.out.println("eating");
+                }
+                if (wantedItem instanceof Ant) {
                     if (currentBehavior.equals("feed")) {
-                        feed((Ant)wantedItem);
-
-                    } else if (currentBehavior.equals("mate")) {
+                        feed((Ant) wantedItem);
+                    }
+                    if (currentBehavior == "mate") {
                         if (((Ant) wantedItem).canMate()) {
                             mateWith((Ant) wantedItem);
                         }
                     }
-                    soughtItem = null;
                 }
-            } else {
+                    //if doesnt collide, go towards
+                } else {
                 goTowards(wantedItem);
             }
         } else {
