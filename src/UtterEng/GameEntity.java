@@ -1,6 +1,5 @@
-package Simulator.Entity;
+package UtterEng;
 
-import Simulator.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -35,10 +34,13 @@ public class GameEntity {
             return false;
         }
 
-        if (distanceTo(entity) < getDimension().getWidth() / 2 + entity.getDimension().getWidth() / 2) {
+        if (getPosition().getX() + getDimension().getWidth() >= entity.getPosition().getX()
+                && getPosition().getX()  <= entity.getPosition().getX() + entity.getDimension().getWidth()
+                && getPosition().getY() + getDimension().getHeight() >= entity.getPosition().getY()
+                && getPosition().getY() <= entity.getPosition().getY() + entity.getDimension().getHeight()
+                ) {
             return true;
         } else {
-            //System.out.println(distanceTo(entity));
             return false;
         }
     }

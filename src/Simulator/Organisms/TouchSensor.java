@@ -1,6 +1,6 @@
 package Simulator.Organisms;
 
-import Simulator.Entity.GameEntity;
+import UtterEng.GameEntity;
 import Simulator.World;
 
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ public class TouchSensor extends Limb {
         super(owner);
     }
 
-    public ArrayList getTouchedObjects() {
+    public ArrayList<GameEntity> getTouchedObjects() {
         ArrayList<GameEntity> touchedObjects = new ArrayList<>();
 
         for (GameEntity entity : World.entities) {

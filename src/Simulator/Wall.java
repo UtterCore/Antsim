@@ -1,6 +1,8 @@
 package Simulator;
 
-import Simulator.Entity.GameEntity;
+import UtterEng.Dimension;
+import UtterEng.GameEntity;
+import UtterEng.Position;
 
 public class Wall extends GameEntity {
 

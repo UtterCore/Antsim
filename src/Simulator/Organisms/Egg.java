@@ -1,6 +1,7 @@
 package Simulator.Organisms;
 
-import Simulator.*;
+import UtterEng.Dimension;
+import UtterEng.Position;
 
 import java.util.Random;
 

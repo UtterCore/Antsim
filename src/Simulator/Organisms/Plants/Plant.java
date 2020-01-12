@@ -1,7 +1,7 @@
 package Simulator.Organisms.Plants;
-import Simulator.*;
 import Simulator.Organisms.Organism;
-import Simulator.Organisms.TouchSensor;
+import UtterEng.Dimension;
+import UtterEng.Position;
 
 import java.util.ArrayList;
 import java.util.Random;

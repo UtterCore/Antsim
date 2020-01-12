@@ -1,20 +1,22 @@
 package Simulator;
 
-import Simulator.Entity.GameEntity;
+import UtterEng.GameEntity;
 import Simulator.Organisms.*;
 import Simulator.Organisms.Plants.Berry;
 import Simulator.Organisms.Plants.BlueberryBush;
 import Simulator.Organisms.Plants.*;
+import UtterEng.Position;
+import UtterEng.UModel;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Model {
+public class Model implements UModel {
 
     private static final int CONSUMABLE_TIMER_MAX = 4000;
     private int consumableTimer;
 
-    //private ArrayList<Simulator.Entity.GameEntity> entities;
+    //private ArrayList<UtterEng.GameEntity> entities;
     private ArrayList<Background> backgrounds;
     private ArrayList<Creature> creatures;
     private ArrayList<GameEntity> items;
@@ -70,20 +72,20 @@ public class Model {
         addEntity(new Wall(new Position(565, 200)));
 
         //create borders
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 20; i++) {
             addEntity(new Wall(new Position(10, i * 40)));
         }
 
-        for (int i = 0; i < 12; i++) {
-            addEntity(new Wall(new Position(620, i * 40)));
+        for (int i = 0; i < 20; i++) {
+            addEntity(new Wall(new Position(1000, i * 40)));
         }
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 25; i++) {
             addEntity(new Wall(new Position(40 + (i*40), -10)));
         }
 
-        for (int i = 0; i < 15; i++) {
-            addEntity(new Wall(new Position(40 + (i*40), 470)));
+        for (int i = 0; i < 25; i++) {
+            addEntity(new Wall(new Position(40 + (i*40), 600)));
         }
     }
 
@@ -101,32 +103,35 @@ public class Model {
             consumableTimer = CONSUMABLE_TIMER_MAX;
         }
     }
-    public void displayInfo(int x, int y) {
+    public void click(int x, int y) {
 
         for (GameEntity entity : getDrawables()) {
-            if (x >= entity.getPosition().getX() - 20 && x <= entity.getPosition().getX() + entity.getDimension().getWidth() + 20 &&
-                    y >= entity.getPosition().getY() - 20 && y <= entity.getPosition().getY() + entity.getDimension().getHeight() + 20) {
+            if (x >= entity.getPosition().getX() && x <= entity.getPosition().getX() + entity.getDimension().getWidth() &&
+                    y >= entity.getPosition().getY() && y <= entity.getPosition().getY() + entity.getDimension().getHeight()) {
 
-                if (entity instanceof Background == false) {
+                displayInfo(entity);
+            }
+        }
+    }
 
-                    if (entity instanceof Ant) {
+    private void displayInfo(GameEntity entity) {
+        if (!(entity instanceof Background)) {
 
-                        //((Simulator.Organisms.Ant) entity).getLegs().setImmobile(!((Simulator.Organisms.Ant) entity).getLegs().isImmobile());
-                        if (((Ant) entity).getIsDead()) {
-                            System.out.println("Ant #" + ((Ant) entity).getId() + " (dead)");
-                        } else {
-                            System.out.println("Ant #" + ((Ant) entity).getId());
-                        }
-                        System.out.println("Age: " + ((Ant) entity).getAge());
-                        System.out.println("Mating: " + ((Ant) entity).getMatingTimer());
-                        System.out.println("Behavior: " + ((Ant) entity).getCurrentBehavior());
-                        //System.out.println("Sought item: " + ((Simulator.Organisms.Ant) entity).soughtItem);
-                    }
-                    if (entity instanceof Organism) {
-                        System.out.println("Energy: " + ((Organism) entity).getEnergy());
-                    }
-                    break;
+            if (entity instanceof Ant) {
+
+                //((Simulator.Organisms.Ant) entity).getLegs().setImmobile(!((Simulator.Organisms.Ant) entity).getLegs().isImmobile());
+                if (((Ant) entity).getIsDead()) {
+                    System.out.println("Ant #" + ((Ant) entity).getId() + " (dead)");
+                } else {
+                    System.out.println("Ant #" + ((Ant) entity).getId());
                 }
+                System.out.println("Age: " + ((Ant) entity).getAge());
+                System.out.println("Mating: " + ((Ant) entity).getMatingTimer());
+                System.out.println("Behavior: " + ((Ant) entity).getCurrentBehavior());
+                //System.out.println("Sought item: " + ((Simulator.Organisms.Ant) entity).soughtItem);
+            }
+            if (entity instanceof Organism) {
+                System.out.println("Energy: " + ((Organism) entity).getEnergy());
             }
         }
     }

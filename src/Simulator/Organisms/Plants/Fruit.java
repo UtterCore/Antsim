@@ -1,8 +1,8 @@
 package Simulator.Organisms.Plants;
 
-import Simulator.Dimension;
+import UtterEng.Dimension;
 import Simulator.Organisms.Organism;
-import Simulator.Position;
+import UtterEng.Position;
 
 public class Fruit extends Organism {
 

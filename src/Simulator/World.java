@@ -1,6 +1,6 @@
 package Simulator;
 
-import Simulator.Entity.GameEntity;
+import UtterEng.GameEntity;
 
 import java.util.ArrayList;
 

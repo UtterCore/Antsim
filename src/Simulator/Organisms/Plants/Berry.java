@@ -1,8 +1,8 @@
 package Simulator.Organisms.Plants;
 
-import Simulator.*;
 import Simulator.Organisms.Consumable;
-import Simulator.Organisms.Organism;
+import UtterEng.Dimension;
+import UtterEng.Position;
 
 import java.util.Random;
 

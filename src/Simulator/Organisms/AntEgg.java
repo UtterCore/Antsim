@@ -1,7 +1,8 @@
 package Simulator.Organisms;
 
 
-import Simulator.*;
+import UtterEng.Dimension;
+import UtterEng.Position;
 
 public class AntEgg extends Egg {
     private int hatchTimer;

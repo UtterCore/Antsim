@@ -1,7 +1,7 @@
 package Simulator.Organisms;
 
-import Simulator.Dimension;
-import Simulator.Position;
+import UtterEng.Dimension;
+import UtterEng.Position;
 
 public class AntLarva extends Larvae {
 
@@ -30,6 +30,7 @@ public class AntLarva extends Larvae {
     public void update() {
         super.update();
         setVisibleObjects(useEye());
+
         wander();
         watchOut();
     }

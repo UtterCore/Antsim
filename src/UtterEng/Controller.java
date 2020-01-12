@@ -1,6 +1,4 @@
-package Simulator;
-
-import Simulator.Entity.GameEntity;
+package UtterEng;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,52 +12,60 @@ import java.util.concurrent.TimeUnit;
 
 public class Controller {
 
+    private int screenWidth;
+    private int screenHeight;
+
     private BufferedImage screenImage;
-    private Model model;
-    private View view = new View();
-    private ScheduledExecutorService gameModelExec;
+    private View view;
     private boolean controlMouse;
 
-    public Controller(Model model) {
-        this.model = model;
+    public Controller(UModel model, int screenWidth, int screenHeight) {
 
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
 
+        //create new game window with correct dimensions
+        view = new View(screenWidth, screenHeight);
+
+        //setting the mouse listener
         view.getGameWindow().addMouseListener(new MouseAdapter() {
 
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
-                model.displayInfo(e.getX(), e.getY());
+                model.click(e.getX(), e.getY());
                 controlMouse = !controlMouse;
             }
         });
 
-        gameModelExec = Executors.newScheduledThreadPool(1);
-        gameModelExec.scheduleAtFixedRate(update, 0, 10, TimeUnit.MILLISECONDS);
-    }
-
-    private Runnable update = new Runnable() {
-
-        @Override
-        public void run() {
-            //drawToScreen(model.getCurrentImage());
+        //the game update loop
+        Runnable update = () -> {
             model.update();
 
             drawToScreen(model.getDrawables());
 
             SwingUtilities.invokeLater(()->view.refreshGUI(screenImage));
-        }
-    };
+        };
 
+        ScheduledExecutorService gameModelExec;
+        gameModelExec = Executors.newScheduledThreadPool(1);
+        gameModelExec.scheduleAtFixedRate(update, 0, 10, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * Uses the sprites, positions, dimensions and rotations of
+     * a list of game entities and outputs them on the screen.
+     *
+     * @param entities a list of drawable game entities
+     */
     private void drawToScreen(ArrayList<GameEntity> entities) {
 
-        screenImage = new BufferedImage(640, 480, BufferedImage.TYPE_INT_RGB);
+        screenImage = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_RGB);
 
         if (entities == null) {
             return;
         }
         for (GameEntity entity : entities) {
-
 
             Graphics2D g = (Graphics2D)screenImage.getGraphics();
 

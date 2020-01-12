@@ -1,4 +1,4 @@
-package Simulator;
+package UtterEng;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,13 +10,13 @@ public class View {
     private JFrame gameWindow;
     private GamePanel gamePanel = new GamePanel();
 
-    public View() {
-        buildGameWindow();
+    public View(int width, int height) {
+        buildGameWindow(width, height);
     }
 
 
 
-    public void buildGameWindow() {
+    public void buildGameWindow(int width, int height) {
         gameWindow = new JFrame("Simulator");
 
         gameWindow.setLayout(new BorderLayout());
@@ -25,7 +25,7 @@ public class View {
         //gameWindow.setUndecorated(true);
 
         //gameWindow.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
-        gameWindow.setPreferredSize(new Dimension(640, 500));
+        gameWindow.setPreferredSize(new Dimension(width, height));
 
         gamePanel = new GamePanel();
         gameWindow.add(gamePanel, BorderLayout.CENTER);

@@ -1,8 +1,9 @@
 package Simulator.Organisms;
 
 import Simulator.*;
-import Simulator.Entity.GameEntity;
-import Simulator.Organisms.Plants.Berry;
+import UtterEng.Dimension;
+import UtterEng.GameEntity;
+import UtterEng.Position;
 
 import java.util.Random;
 
@@ -69,7 +70,7 @@ public class Ant extends Creature {
 
     public boolean canMate() {
 
-        return (getAge() > MATURITY_AGE && getEnergy() > 30 + 20);
+        return (!getIsDead() && getAge() > MATURITY_AGE && getEnergy() > 30 + 20);
     }
 
 
@@ -151,10 +152,7 @@ public class Ant extends Creature {
             setMatingTimer(getMatingTimer() - 1);
         }
         if (getMatingTimer() <= 0) {
-
             currentBehavior = "mate";
-            searchPriority = 10;
-
         }
     }
 
@@ -200,7 +198,6 @@ public class Ant extends Creature {
     void handleHunger() {
 
         starveTimer--;
-        soughtItem = null;
 
         if (starveTimer < 0) {
             setEnergy(getEnergy() - 1);
@@ -208,10 +205,7 @@ public class Ant extends Creature {
         }
 
         if (getEnergy() < 60) {
-            if (currentBehavior == null) {
-                currentBehavior = "eat";
-                searchPriority = 10;
-            }
+            currentBehavior = "eat";
         }
 
         if (getEnergy() < 30) { //override all other desires
@@ -228,8 +222,6 @@ public class Ant extends Creature {
     @Override
     protected void updateCreatureStatus() {
         currentBehavior = null;
-       // soughtItem = null;
-
 
         if (!getIsDead()) {
             if (getAge() > MATURITY_AGE) {
@@ -239,16 +231,6 @@ public class Ant extends Creature {
             handleAging();
         }
     }
-
-    public boolean isHungry() {
-        return getEnergy() < 40;
-    }
-
-    public boolean isStarving() {
-        return getEnergy() < 20;
-    }
-
-
 
     @Override
     protected void creatureBehavior() {
@@ -267,24 +249,32 @@ public class Ant extends Creature {
         for (GameEntity entity : getVisibleObjects()) {
 
             //feed
-            if (!isHungry()) {
-                if (entity instanceof Ant && ((Ant) entity).isHungry()) {
+            if (!isHungry() && currentBehavior == null) {
+                if (entity instanceof Ant && ((Ant) entity).isHungry()
+                        && (!((Creature) entity).getIsDead())) {
                     wantedItem = entity;
                     currentBehavior = "feed";
-                    doMatingCall((Ant) entity);
+
+                    if (entity instanceof Ant) {
+                        doMatingCall((Ant) entity);
+                    }
                 }
                 //if is hungry
             } else {
                 if (entity instanceof Organism) {
-                    if (((Organism) entity).isEdible()) {
-                        wantedItem = entity;
+                    if (currentBehavior == "eat") {
+                        if (((Organism) entity).isEdible()) {
+                            wantedItem = entity;
+                            //  System.out.println(entity);
+                        }
                     }
                 }
             }
 
             if (currentBehavior == "mate") {
                 if (entity instanceof Ant) {
-                    if (((Ant) entity).getAge() > MATURITY_AGE) {
+                    if (((Ant) entity).canMate()) {
+                    wantedItem = entity;
                         doMatingCall((Ant) entity);
                     }
                 }
@@ -295,10 +285,9 @@ public class Ant extends Creature {
             if (collidesWith(wantedItem)) {
 
                 if (wantedItem instanceof Organism
-                        && currentBehavior.equals("eat")
+                        && currentBehavior == "eat"
                         && ((Organism) wantedItem).isEdible()) {
                     eatItem((Organism) wantedItem);
-                    //System.out.println("eating");
                 }
                 if (wantedItem instanceof Ant) {
                     if (currentBehavior.equals("feed")) {
@@ -325,6 +314,5 @@ public class Ant extends Creature {
         setIsDead(true);
         }
         */
-        currentBehavior = null;
     }
 }

@@ -1,6 +1,8 @@
 package Simulator.Organisms;
 import Simulator.*;
-import Simulator.Entity.GameEntity;
+import UtterEng.Dimension;
+import UtterEng.GameEntity;
+import UtterEng.Position;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -82,6 +84,14 @@ public abstract class Creature extends Organism {
         }
     }
 
+    public boolean isHungry() {
+        return getEnergy() < 40;
+    }
+
+    public boolean isStarving() {
+        return getEnergy() < 20;
+    }
+
     protected void wander() {
 
 
@@ -141,11 +151,23 @@ public abstract class Creature extends Organism {
     }
 
     protected void watchOut() {
+
+        //touch
+/*
+        for (GameEntity entity : getTouch().getTouchedObjects()) {
+            if (entity instanceof Wall) {
+                choiceTimer = 0;
+                break;
+            }
+        }
+*/
+        //eyes
         if (getVisibleObjects() != null) {
             if (getVisibleObjects().size() > 0) {
-                if (distanceTo(getVisibleObjects().get(0)) < (int)getDimension().getWidth()) {
+                //if (distanceTo(getVisibleObjects().get(0)) <= (int)getDimension().getWidth()) {
+                if (collidesWith(getVisibleObjects().get(0))) {
 
-                    if (getVisibleObjects().get(0).tag.equals("wall") || !getVisibleObjects().get(0).getIsTransparent()) {
+                    if (getVisibleObjects().get(0) instanceof Wall || !getVisibleObjects().get(0).getIsTransparent()) {
                         getLegs().moveBackward();
                         getLegs().moveBackward();
 
@@ -154,9 +176,9 @@ public abstract class Creature extends Organism {
                         Random random = new Random();
 
                         if (random.nextBoolean()) {
-                          //  getLegs().rotate(LEFT);
+                            getLegs().rotate(LEFT);
                         } else {
-                            //getLegs().rotate(RIGHT);
+                            getLegs().rotate(RIGHT);
                         }
                     }
                 }

@@ -1,6 +1,6 @@
 package Simulator.Organisms;
-import Simulator.*;
-import Simulator.Entity.GameEntity;
+import UtterEng.GameEntity;
+import UtterEng.Position;
 
 public class Mouth extends Limb {
 

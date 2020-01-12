@@ -1,8 +1,8 @@
 package Simulator.Organisms.Plants;
 
-import Simulator.Dimension;
-import Simulator.Entity.GameEntity;
-import Simulator.Position;
+import UtterEng.Dimension;
+import UtterEng.GameEntity;
+import UtterEng.Position;
 import Simulator.Wall;
 
 import java.util.ArrayList;
@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class BlueberryBush extends Plant {
     public BlueberryBush(Position position) {
         super(position, new Dimension(40, 40), "./resources/bbb.png");
+        setEdible(true);
     }
 
     @Override

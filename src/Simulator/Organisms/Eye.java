@@ -1,7 +1,8 @@
 package Simulator.Organisms;
 
 import Simulator.*;
-import Simulator.Entity.GameEntity;
+import UtterEng.GameEntity;
+import UtterEng.Position;
 
 import java.util.ArrayList;
 

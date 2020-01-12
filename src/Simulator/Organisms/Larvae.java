@@ -1,9 +1,7 @@
 package Simulator.Organisms;
 
-import Simulator.Dimension;
-import Simulator.Position;
-
-import java.util.Random;
+import UtterEng.Dimension;
+import UtterEng.Position;
 
 public class Larvae extends Creature {
 
