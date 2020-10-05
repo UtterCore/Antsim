@@ -109,7 +109,7 @@ public class SmartAnt extends Creature {
                         getLegs().moveForward();
                         if (entity instanceof Creature) {
                             if (!((Creature) entity).getIsDead()) {
-                                System.out.println("SEES MEAAT");
+                                //System.out.println("SEES MEAAT");
                             }
                         }
                     }
@@ -139,7 +139,6 @@ public class SmartAnt extends Creature {
 
                     if (collidesWith(ant)) {
                         mateWith(ant);
-                        MessageLog.getInstance().addMessage("SMART ANT BAZZADE");
                         currentBehavior = NONE;
                         ant.setCurrentBehavior(NONE);
                     } else {

@@ -21,7 +21,7 @@ public abstract class Egg extends Creature {
         }
 
         hatchTimer = 4000;
-        setEnergy(30);
+        setEnergy(40);
 
         isHatched = false;
         hasHunger = false;

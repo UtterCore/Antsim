@@ -54,6 +54,8 @@ public abstract class Creature extends Organism {
 
     protected GameEntity oldWanted;
 
+    private ArrayList<Tracks> tracks;
+
     public Creature(Position position, Dimension dimension, String spritePath) {
         super(position, dimension, spritePath);
 
@@ -78,6 +80,7 @@ public abstract class Creature extends Organism {
 
 
         foodPreferences = new ArrayList<EntityClass>();
+        tracks = new ArrayList<>();
         addEntityClass(EntityClass.Fruit);
     }
 
@@ -114,6 +117,22 @@ public abstract class Creature extends Organism {
 
     public void setHasChild(boolean b) {
         hasChild = b;
+    }
+
+    public void leaveTracks() {
+
+        if (tracks.size() >= 10) {
+            tracks.get(0).setShouldRemove(true);
+            tracks.remove(0);
+
+           // tracks.remove(tracks.size() - 1);
+        }
+
+        tracks.add(new Tracks(this));
+    }
+
+    public ArrayList<Tracks> getTracks() {
+        return tracks;
     }
 
     protected void goTowards(GameEntity entity) {

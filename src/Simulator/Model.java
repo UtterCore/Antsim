@@ -194,6 +194,8 @@ public class Model implements UModel {
             creatures.add((Creature)entity);
         } else if (entity instanceof Effect) {
             effects.add(entity);
+        } else if (entity instanceof Tracks) { // remove this to show tracks
+
         } else {
             items.add(entity);
         }
@@ -209,7 +211,6 @@ public class Model implements UModel {
 
         for (int i = 0; i < effects.size(); i++) {
             GameEntity entity = effects.get(0);
-
             effects.remove(entity);
         }
 
@@ -217,9 +218,19 @@ public class Model implements UModel {
                 for (int i = 0; i < creatures.size(); i++) {
                     Creature creature = creatures.get(i);
 
-                //    addEntity(new WantBubble(creature, "./resources/berry.png"));
-
                     creature.update();
+                    for (Tracks tracks : creature.getTracks()) {
+                        if (!tracks.isInWorld()) {
+                            addEntity(tracks);
+                            tracks.setInWorld(true);
+                        }
+                    }
+
+                    if (creature.isHungry()) {
+                        addEntity(new WantBubble(creature, "./resources/berry.png"));
+                    } else if (creature.needsToMate()) {
+                        addEntity(new WantBubble(creature, "./resources/heart.png"));
+                    }
                     if (creature instanceof Egg) {
                         Egg egg = (Egg) creature;
                         if (egg.isHatched()) {
@@ -271,6 +282,20 @@ public class Model implements UModel {
                         }
                     }
 
+                    if (entity.isShouldRemove()) {
+                        items.remove(entity);
+                    }
+                }
+
+
+                for (int i = 0; i < effects.size(); i++) {
+                    GameEntity effect = effects.get(i);
+                    if (effect instanceof Effect) {
+
+                        for (int j = 0; j < ((Effect) effect).getChildren().size(); j++) {
+                            addEntity(((Effect) effect).getChildren().get(j));
+                        }
+                    }
                 }
 
 

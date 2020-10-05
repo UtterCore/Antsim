@@ -15,6 +15,7 @@ public class GameEntity {
     private float rotation;
     private boolean isBackground;
     private boolean isTransparent;
+    private boolean shouldRemove;
 
     private ArrayList<EntityClass> entityClasses;
     public String tag;
@@ -68,6 +69,15 @@ public class GameEntity {
             return false;
         }
     }
+
+    public boolean isShouldRemove() {
+        return shouldRemove;
+    }
+
+    public void setShouldRemove(boolean shouldRemove) {
+        this.shouldRemove = shouldRemove;
+    }
+
 
     public Position getCenterPosition() {
 

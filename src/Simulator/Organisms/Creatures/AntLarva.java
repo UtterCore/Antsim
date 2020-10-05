@@ -10,7 +10,7 @@ public class AntLarva extends Larvae {
         super(position, new Dimension(15, 25), "./resources/antlarvae.png");
 
         tag = "ant_larva";
-        setEnergy(30);
+        setEnergy(40);
         setEvolveTimer(5000);
         getLegs().setSpeed(0.1f);
     }

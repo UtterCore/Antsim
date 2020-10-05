@@ -10,6 +10,7 @@ public class Legs extends Limb {
     private float speed;
     private float maxSpeed;
     private boolean isImmobile;
+    private int trackTimer = 0;
 
     public Legs(Creature owner) {
         super(owner);
@@ -28,6 +29,12 @@ public class Legs extends Limb {
     protected void moveForward() {
         if (isImmobile) {
             return;
+        }
+
+        trackTimer--;
+        if (trackTimer <= 0) {
+            getOwner().leaveTracks();
+            trackTimer = 30;
         }
 
         switch ((int)getOwner().getRotation()) {
