@@ -20,6 +20,7 @@ public class Model implements UModel {
     private ArrayList<Background> backgrounds;
     private ArrayList<Creature> creatures;
     private ArrayList<GameEntity> items;
+    private ArrayList<GameEntity> effects;
 
     public long fps;
 
@@ -31,6 +32,7 @@ public class Model implements UModel {
         backgrounds = new ArrayList<>();
         creatures = new ArrayList<>();
         items = new ArrayList<>();
+        effects = new ArrayList<>();
 
         addEntity(new Background("./resources/bg.png"));
 
@@ -190,6 +192,8 @@ public class Model implements UModel {
             backgrounds.add((Background)entity);
         } else if (entity instanceof Creature) {
             creatures.add((Creature)entity);
+        } else if (entity instanceof Effect) {
+            effects.add(entity);
         } else {
             items.add(entity);
         }
@@ -202,8 +206,18 @@ public class Model implements UModel {
         long oldTime = System.currentTimeMillis();
         //spawnConsumables();
 
+
+        for (int i = 0; i < effects.size(); i++) {
+            GameEntity entity = effects.get(0);
+
+            effects.remove(entity);
+        }
+
+
                 for (int i = 0; i < creatures.size(); i++) {
                     Creature creature = creatures.get(i);
+
+                //    addEntity(new WantBubble(creature, "./resources/berry.png"));
 
                     creature.update();
                     if (creature instanceof Egg) {
@@ -260,6 +274,8 @@ public class Model implements UModel {
                 }
 
 
+
+
         World.entities = getDrawables();
 
         long newTime = System.currentTimeMillis();
@@ -276,6 +292,7 @@ public class Model implements UModel {
         drawables.addAll(backgrounds);
         drawables.addAll(items);
         drawables.addAll(creatures);
+        drawables.addAll(effects);
 
         return drawables;
     }

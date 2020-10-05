@@ -30,6 +30,9 @@ public class GameEntity {
         rotation = 0;
     }
 
+    public void bindTop() {
+    }
+
     public void setSprite(BufferedImage sprite) {
         this.sprite = sprite;
     }

@@ -8,7 +8,8 @@ public enum EntityClass {
     Carcass(),
     Egg(),
     Larva(),
-    Plant();
+    Plant(),
+    Effect();
 
     EntityClass() {
 
