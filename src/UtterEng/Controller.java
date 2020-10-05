@@ -74,10 +74,21 @@ public class Controller {
         gameModelExec.scheduleAtFixedRate(updateView, 0, 1000/100, TimeUnit.MILLISECONDS);
         gameModelExec.scheduleAtFixedRate(updateFPSCounter, 0, 1, TimeUnit.SECONDS);
 
-        initTwitchBot((Model)model);
+        initTwitchBot(model);
     }
 
     private void initTwitchBot(Model model) {
+
+        File passFile = new File("./src/twitchpass.txt");
+        String pass = null;
+
+        try {
+            Scanner scanner = new Scanner(passFile);
+            pass = scanner.next();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
 
         String channelName = "#utterc_bot";
         TwitchBot bot = new TwitchBot(this, model);
@@ -86,15 +97,6 @@ public class Controller {
 
         // Connect to the IRC server.
 
-        File passFile = new File("./twitchpass.txt");
-
-        String pass = null;
-        try {
-            Scanner scanner = new Scanner(passFile);
-            pass = scanner.nextLine();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
         try {
             bot.connect("irc.twitch.tv", 6667, pass);
         } catch (IOException e) {
