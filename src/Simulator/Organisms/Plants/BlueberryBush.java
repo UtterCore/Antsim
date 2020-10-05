@@ -1,15 +1,19 @@
 package Simulator.Organisms.Plants;
 
+import Simulator.EntityClass;
 import UtterEng.Dimension;
 import UtterEng.GameEntity;
 import UtterEng.Position;
 import Simulator.Wall;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class BlueberryBush extends Plant {
     public BlueberryBush(Position position) {
         super(position, new Dimension(40, 40), "./resources/bbb.png");
+        tag = "blueberrybush";
+        setEnergy(20);
         setEdible(true);
     }
 
@@ -19,7 +23,8 @@ public class BlueberryBush extends Plant {
 
         if (getDropTimer() <= 0 && getEnergy() >= getMaxEnergy() + 30) {
             Berry newBerry = new Berry(getRandomDropPoint());
-            giveEnergy(newBerry, 30);
+            //satte detta till 20
+            giveEnergy(newBerry, 20);
 
 
             boolean touchesWall = false;
@@ -32,9 +37,13 @@ public class BlueberryBush extends Plant {
                     break;
                 }
             }
-            if (touchesWall) {
-            } else {
+            if (!touchesWall) {
                 dropFruit(newBerry);
+
+                Random random = new Random();
+                if (random.nextInt(10) == 10) {
+                    dropFruit(new CanBerry(getRandomDropPoint()));
+                }
             }
 
             setDropTimer(DROP_TIMER_MAX);

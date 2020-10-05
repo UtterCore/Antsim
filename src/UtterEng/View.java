@@ -9,6 +9,7 @@ public class View {
 
     private JFrame gameWindow;
     private GamePanel gamePanel = new GamePanel();
+    public int frames;
 
     public View(int width, int height) {
         buildGameWindow(width, height);
@@ -38,10 +39,13 @@ public class View {
 
     public void refreshGUI(BufferedImage gameView) {
 
+
         if (gamePanel != null) {
             gamePanel.setImage(gameView);
             gamePanel.repaint();
         }
+
+        frames++;
 
         gameWindow.revalidate();
         gameWindow.repaint();

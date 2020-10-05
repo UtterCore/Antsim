@@ -1,23 +1,22 @@
 package Simulator.Organisms.Plants;
 
-import Simulator.Organisms.Consumable;
+import Simulator.EntityClass;
+import Simulator.Organisms.Creatures.Creature;
 import UtterEng.Dimension;
 import UtterEng.Position;
 
 import java.util.Random;
 
-public class Berry extends Fruit implements Consumable {
+public class Berry extends Fruit {
 
     public Berry(Position position) {
         super(position, new Dimension(20, 20), "./resources/berry.png");
         tag = "berry";
-        setIsTransparent(true);
     }
 
     @Override
-    public void update() {
-        super.update();
-        if (getDecayTimer() <= 0 && hasGrownInto() == null) {
+    public void decayTrigger() {
+        if (hasGrownInto() == null) {
 
             Random random = new Random();
 
@@ -25,5 +24,10 @@ public class Berry extends Fruit implements Consumable {
                 growInto(new BlueberryBush(getPosition()));
             }
         }
+    }
+
+    @Override
+    public void eatTrigger(Creature creature) {
+
     }
 }

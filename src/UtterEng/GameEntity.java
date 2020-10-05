@@ -1,9 +1,12 @@
 package UtterEng;
 
+import Simulator.EntityClass;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GameEntity {
     private Position position;
@@ -13,10 +16,13 @@ public class GameEntity {
     private boolean isBackground;
     private boolean isTransparent;
 
+    private ArrayList<EntityClass> entityClasses;
     public String tag;
 
     public GameEntity(Position position, Dimension dimension, String spritePath) {
         tag = "unassigned";
+
+        entityClasses = new ArrayList<>();
 
         this.position = position;
         this.dimension = dimension;
@@ -28,6 +34,21 @@ public class GameEntity {
         this.sprite = sprite;
     }
 
+    public ArrayList<EntityClass> getEntityClasses() {
+        return entityClasses;
+    }
+
+    public void addEntityClass(EntityClass entityClass) {
+        entityClasses.add(entityClass);
+    }
+
+    public void removeEntityClass(EntityClass entityClass) {
+        for (EntityClass entityC : new ArrayList<>(entityClasses)) {
+            if (entityC.equals(entityClass)) {
+                entityClasses.remove(entityC);
+            }
+        }
+    }
     public boolean collidesWith(GameEntity entity) {
 
         if (this == entity) {
@@ -119,14 +140,12 @@ public class GameEntity {
 
     public BufferedImage loadSprite(String spritePath) {
 
-        BufferedImage sprite = null;
-
-        File f = new File(spritePath);
-        try {
-            sprite = ImageIO.read(f);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (!ImageBank.getInstance().spriteExists(spritePath)) {
+            ImageBank.getInstance().createSprite(spritePath);
         }
-        return sprite;
+
+        return ImageBank.getInstance().getSprite(spritePath);
+
+
     }
 }

@@ -1,11 +1,11 @@
 package Simulator;
 
+import Simulator.Organisms.Creatures.*;
 import UtterEng.GameEntity;
-import Simulator.Organisms.*;
 import Simulator.Organisms.Plants.Berry;
 import Simulator.Organisms.Plants.BlueberryBush;
 import Simulator.Organisms.Plants.*;
-import UtterEng.Position;
+import UtterEng.*;
 import UtterEng.UModel;
 
 import java.util.ArrayList;
@@ -21,6 +21,9 @@ public class Model implements UModel {
     private ArrayList<Creature> creatures;
     private ArrayList<GameEntity> items;
 
+    public long fps;
+
+    public int frameCount;
     public Model() {
 
         consumableTimer = CONSUMABLE_TIMER_MAX;
@@ -32,63 +35,44 @@ public class Model implements UModel {
         addEntity(new Background("./resources/bg.png"));
 
 
-        /*
-        addEntity(new Berry(new Position(240, 200)));
-        addEntity(new Berry(new Position(350, 100)));
-        addEntity(new Berry(new Position(350, 300)));
-        addEntity(new Berry(new Position(100, 400)));
-        addEntity(new Berry(new Position(500, 350)));
-        addEntity(new Berry(new Position(310, 230)));
-        */
-        BlueberryBush bbb = new BlueberryBush(new Position(300, 300));
-        bbb.setEnergy(130);
-        addEntity(bbb);
+        for (int i = 0; i < 5; i++) {
+            createSmartAnt();
+        }
 
-        BlueberryBush bbb2 = new BlueberryBush(new Position(100, 120));
-        bbb2.setEnergy(110);
-        addEntity(bbb2);
+        addEntity(new SmartAntEgg(getRandomPos()));
 
-        BlueberryBush bbb3 = new BlueberryBush(new Position(500, 80));
-        bbb3.setEnergy(120);
-        addEntity(bbb3);
+        for (int i = 0;  i < 10; i++) {
+            addEntity(new BlueberryBush(getRandomPos()));
+        }
 
-        addEntity(new AntEgg(new Position(100, 200)));
-        addEntity(new AntEgg(new Position(240, 120)));
-        addEntity(new AntEgg(new Position(280, 370)));
-
-        Ant oldAntM = new Ant(new Position(565, 400));
-        oldAntM.setAge(3);
-        oldAntM.setMatingTimer(0);
-        oldAntM.setEnergy(60);
-        addEntity(oldAntM);
-
-        Ant oldAntF = new Ant(new Position(565, 400));
-        oldAntF.setAge(3);
-        oldAntF.setMatingTimer(0);
-        oldAntF.setEnergy(60);
-        addEntity(oldAntF);
+        addEntity(new CanBerry(getRandomPos()));
 
         addEntity(new Wall(new Position(520, 200)));
         addEntity(new Wall(new Position(565, 200)));
 
         //create borders
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 40; i++) {
             addEntity(new Wall(new Position(10, i * 40)));
         }
 
-        for (int i = 0; i < 20; i++) {
-            addEntity(new Wall(new Position(1000, i * 40)));
+        for (int i = 0; i < 40; i++) {
+            addEntity(new Wall(new Position(1580, i * 40)));
         }
 
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 45; i++) {
             addEntity(new Wall(new Position(40 + (i*40), -10)));
         }
 
-        for (int i = 0; i < 25; i++) {
-            addEntity(new Wall(new Position(40 + (i*40), 600)));
+        for (int i = 0; i < 45; i++) {
+            addEntity(new Wall(new Position(40 + (i*40), 850)));
         }
     }
 
+    private Position getRandomPos() {
+        Random random = new Random();
+
+        return new Position(random.nextInt(1500) + 40, random.nextInt(850) + 40);
+    }
     private void spawnConsumables() {
         Random random = new Random();
 
@@ -119,7 +103,7 @@ public class Model implements UModel {
 
             if (entity instanceof Ant) {
 
-                //((Simulator.Organisms.Ant) entity).getLegs().setImmobile(!((Simulator.Organisms.Ant) entity).getLegs().isImmobile());
+                //((Simulator.Organisms.Creatures.Ant) entity).getLegs().setImmobile(!((Simulator.Organisms.Creatures.Ant) entity).getLegs().isImmobile());
                 if (((Ant) entity).getIsDead()) {
                     System.out.println("Ant #" + ((Ant) entity).getId() + " (dead)");
                 } else {
@@ -128,14 +112,79 @@ public class Model implements UModel {
                 System.out.println("Age: " + ((Ant) entity).getAge());
                 System.out.println("Mating: " + ((Ant) entity).getMatingTimer());
                 System.out.println("Behavior: " + ((Ant) entity).getCurrentBehavior());
-                //System.out.println("Sought item: " + ((Simulator.Organisms.Ant) entity).soughtItem);
+                //System.out.println("Sought item: " + ((Simulator.Organisms.Creatures.Ant) entity).soughtItem);
             }
             if (entity instanceof Organism) {
                 System.out.println("Energy: " + ((Organism) entity).getEnergy());
             }
         }
     }
-    public void addEntity(GameEntity entity) {
+
+    public void allDance() {
+        for (Creature creature : creatures) {
+            if (creature instanceof Ant) {
+                ((Ant) creature).dance();
+            }
+        }
+    }
+    public void createAnt() {
+        addEntity(new Ant(getRandomPos()));
+    }
+
+    public void createSmartAnt() {
+        addEntity(new SmartAnt(getRandomPos()));
+    }
+
+    public void createBush() {
+        BlueberryBush bbb = new BlueberryBush(getRandomPos());
+        bbb.setEnergy(130);
+        addEntity(bbb);
+
+    }
+
+    public void createLina() {
+        addEntity(new LinaAnt(getRandomPos()));
+    }
+
+    public void createWictor() {
+        addEntity(new WictorAnt(getRandomPos()));
+    }
+
+    public void killAllAnts() {
+        for (Creature creature : creatures) {
+            creature.die();
+        }
+    }
+
+    public void changeName(String currentName, String newName) {
+        for (Creature creature : creatures) {
+            if (creature.getName().equals(currentName)) {
+                creature.setName(newName);
+            }
+        }
+    }
+
+    public void resetAll() {
+        for (Creature creature : new ArrayList<>(creatures)) {
+            creatures.remove(creature);
+        }
+
+        for (GameEntity item : new ArrayList<>(items)) {
+            if (!(item instanceof Wall)) {
+                items.remove(item);
+            }
+        }
+    }
+
+    public String getInfo() {
+        String out = "";
+        out += "Info: ";
+        out += "Currently alive: " + creatures.size() + ", ";
+        out += "Other items on map: " + items.size() + "\n";
+
+        return out;
+    }
+    public synchronized void addEntity(GameEntity entity) {
 
         if (entity instanceof Background) {
             backgrounds.add((Background)entity);
@@ -147,73 +196,78 @@ public class Model implements UModel {
         //entities.add(entity);
     }
 
+
     public void update() {
 
+        long oldTime = System.currentTimeMillis();
         //spawnConsumables();
-        for (int i = 0; i < creatures.size(); i++) {
-            Creature creature = creatures.get(i);
 
-            creature.update();
-            if (creature instanceof Egg) {
-                if (((Egg) creature).isHatched()) {
-                    Egg egg = (Egg)creature;
-                    addEntity(egg.hatch());
-                }
-            }
+                for (int i = 0; i < creatures.size(); i++) {
+                    Creature creature = creatures.get(i);
 
-            if (creature instanceof Larvae) {
-                if (((Larvae) creature).isEvolved()) {
-                    Larvae larva = (Larvae)creature;
-                    addEntity((Ant)larva.evolve());
-                }
-            }
+                    creature.update();
+                    if (creature instanceof Egg) {
+                        Egg egg = (Egg) creature;
+                        if (egg.isHatched()) {
+                            addEntity(egg.hatch());
+                        }
+                    }
 
-            if (creature instanceof Ant) {
+                    if (creature instanceof Larvae) {
+                        Larvae larva = (Larvae) creature;
+                        if (larva.isEvolved()) {
+                            addEntity(larva.evolve());
+                        }
+                    }
 
-                if (((Ant) creature).getHasChild()) {
-                    addEntity(new AntEgg(new Position(creature.getPosition().getX(), creature.getPosition().getY())));
-                    //addEntity(new Ant(new Position(creature.getPosition().getX(), creature.getPosition().getY())));
-                    ((Ant) creature).setHasChild(false);
-                }
-            }//
+                    if (creature.getHasChild()) {
+                        addEntity(creature.giveBirth());
+                    }
 
-            if (creature instanceof Organism) {
-                if (creature.getEnergy() <= 0) {
-                    creatures.remove(creature);
-                    continue;
-                }
-            }
-
-        }
-
-        for (int i = 0; i < items.size(); i++) {
-            GameEntity entity = items.get(i);
-
-            if (entity instanceof Organism) {
-                ((Organism) entity).update();
-
-                if (entity instanceof Plant) {
-                    if (((Plant) entity).getFruitsToDrop().size() > 0) {
-                        items.addAll(((Plant) entity).getFruitsToDrop());
-                        ((Plant) entity).setFruitsToDrop(new ArrayList<Fruit>());
+                    if (creature.getEnergy() <= 0) {
+                        creatures.remove(creature);
+                        continue;
                     }
                 }
 
-                if (entity instanceof Fruit) {
-                    if (((Fruit) entity).hasGrownInto() != null) {
-                        Plant newPlant = ((Fruit) entity).hasGrownInto();
-                        addEntity(newPlant);
-                        ((Fruit) entity).giveEnergy(newPlant, -1);
+
+                for (int i = 0; i < items.size(); i++) {
+                    GameEntity entity = items.get(i);
+
+                    if (entity instanceof Organism) {
+                        ((Organism) entity).update();
+
+                        if (entity instanceof Plant) {
+                            if (((Plant) entity).getFruitsToDrop().size() > 0) {
+                                items.addAll(((Plant) entity).getFruitsToDrop());
+                                ((Plant) entity).setFruitsToDrop(new ArrayList<Fruit>());
+                            }
+                        }
+
+                        if (entity instanceof Fruit) {
+                            if (((Fruit) entity).hasGrownInto() != null) {
+                                Plant newPlant = ((Fruit) entity).hasGrownInto();
+                                addEntity(newPlant);
+                                ((Fruit) entity).giveEnergy(newPlant, -1);
+                            }
+                        }
+
+                        if (((Organism) entity).getEnergy() <= 0) {
+                            items.remove(entity);
+                        }
                     }
+
                 }
 
-                if (((Organism) entity).getEnergy() <= 0) {
-                    items.remove(entity);
-                }
-            }
 
-        }
         World.entities = getDrawables();
+
+        long newTime = System.currentTimeMillis();
+        long msPerFrame = newTime - oldTime;
+
+        if (msPerFrame >= 5) {
+            fps = 1000 / msPerFrame;
+        }
     }
 
     public ArrayList<GameEntity> getDrawables() {
@@ -221,18 +275,7 @@ public class Model implements UModel {
         ArrayList<GameEntity> drawables = new ArrayList<>();
         drawables.addAll(backgrounds);
         drawables.addAll(items);
-        for(Organism creature : creatures) {
-            if ((creature instanceof Egg)) {
-                drawables.add(creature);
-                continue;
-            }
-        }
-        for(Organism creature : creatures) {
-            if (!(creature instanceof Egg)) {
-                drawables.add(creature);
-                continue;
-            }
-        }
+        drawables.addAll(creatures);
 
         return drawables;
     }

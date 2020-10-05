@@ -1,10 +1,12 @@
 package Simulator.Organisms.Plants;
 
+import Simulator.EntityClass;
+import Simulator.Organisms.Creatures.Creature;
 import UtterEng.Dimension;
-import Simulator.Organisms.Organism;
+import Simulator.Organisms.Creatures.Organism;
 import UtterEng.Position;
 
-public class Fruit extends Organism {
+public abstract class Fruit extends Organism {
 
     protected static final int DECAY_TIMER_MAX = 2 * 60 * 60;
 
@@ -14,7 +16,9 @@ public class Fruit extends Organism {
     public Fruit(Position position, Dimension dimension, String spritePath) {
         super(position, dimension, spritePath);
 
-        setEdible(true);
+        addEntityClass(EntityClass.Fruit);
+        setIsTransparent(true);
+
         decayTimer = DECAY_TIMER_MAX;
     }
 
@@ -34,7 +38,12 @@ public class Fruit extends Organism {
     public void update() {
         if (decayTimer > 0) {
             decayTimer--;
+        } else {
+            decayTrigger();
         }
-
     }
+
+    public abstract void decayTrigger();
+
+    public abstract void eatTrigger(Creature creature);
 }

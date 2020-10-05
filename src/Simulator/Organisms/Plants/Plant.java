@@ -1,5 +1,6 @@
 package Simulator.Organisms.Plants;
-import Simulator.Organisms.Organism;
+import Simulator.EntityClass;
+import Simulator.Organisms.Creatures.Organism;
 import UtterEng.Dimension;
 import UtterEng.Position;
 
@@ -48,6 +49,8 @@ public class Plant extends Organism {
         witherTimer = WITHER_TIMER_MAX;
 
         setIsTransparent(false);
+
+        addEntityClass(EntityClass.Plant);
     }
 
     public int getMaxEnergy() {
