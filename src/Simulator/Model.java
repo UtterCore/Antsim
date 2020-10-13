@@ -194,7 +194,7 @@ public class Model implements UModel {
             creatures.add((Creature)entity);
         } else if (entity instanceof Effect) {
             effects.add(entity);
-        } else if (entity instanceof Tracks) { // remove this to show tracks
+      //  } else if (entity instanceof Tracks) { // remove this to show tracks
 
         } else {
             items.add(entity);

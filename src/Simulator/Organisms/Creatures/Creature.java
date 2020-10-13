@@ -139,6 +139,19 @@ public abstract class Creature extends Organism {
         getLegs().moveForward();
     }
 
+    private void retrace() {
+
+        if (getTracks().size() == 0) {
+            return;
+        }
+        for (int i = 0; i < 4; i++) {
+            setPosition(new Position(getTracks().get(getTracks().size()-1).getPosition().getX(), getTracks().get(getTracks().size()-1).getPosition().getY()));
+            choiceTimer = -10;
+            getLegs().rotate(LEFT);
+            getLegs().rotate(LEFT);
+        }
+    }
+
     public ArrayList<GameEntity> getVisibleObjects() {
         return visibleObjects;
     }
@@ -332,40 +345,31 @@ public abstract class Creature extends Organism {
         }
 
         if (!stay) {
-            getLegs().moveForward();
+            boolean isTouchingWall = false;
+            for (GameEntity entity : getTouch().getTouchedObjects()) {
+                if (!entity.getIsTransparent()) {
+                    isTouchingWall = true;
+                }
+            }
+            if (!isTouchingWall) {
+                getLegs().moveForward();
+            } else {
+                getLegs().moveBackward();
+                getLegs().rotate(LEFT);
+            }
         }
     }
 
     protected void watchOut() {
 
-        //touch
-/*
-        for (GameEntity entity : getTouch().getTouchedObjects()) {
-            if (entity instanceof Wall) {
-                choiceTimer = 0;
-                break;
-            }
-        }
-*/
         //eyes
         if (getVisibleObjects() != null) {
             if (getVisibleObjects().size() > 0) {
-                //if (distanceTo(getVisibleObjects().get(0)) <= (int)getDimension().getWidth()) {
+
                 if (collidesWith(getVisibleObjects().get(0))) {
 
                     if (getVisibleObjects().get(0) instanceof Wall || !getVisibleObjects().get(0).getIsTransparent()) {
-                        getLegs().moveBackward();
-                        getLegs().moveBackward();
-
-                        //if cant move
-                        choiceTimer = -10;
-                        Random random = new Random();
-
-                        if (random.nextBoolean()) {
-                            getLegs().rotate(LEFT);
-                        } else {
-                            getLegs().rotate(RIGHT);
-                        }
+                        retrace();
                     }
                 }
             }

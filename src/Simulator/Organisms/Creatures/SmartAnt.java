@@ -22,6 +22,7 @@ public class SmartAnt extends Creature {
         currentBehavior = EAT;
 
         setName(tag + "#" + World.ants++);
+
         addEntityClass(EntityClass.Meat);
 
         addFoodPreference(EntityClass.Carcass);

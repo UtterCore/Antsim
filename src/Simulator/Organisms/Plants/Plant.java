@@ -7,7 +7,7 @@ import UtterEng.Position;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Plant extends Organism {
+public abstract class Plant extends Organism {
     protected final static int GROW_TIMER_MAX = 1 * 30;
     protected final static int DROP_TIMER_MAX = 10 * 60;
     protected final static int WITHER_TIMER_MAX = 2 * 40 * 60;

@@ -34,7 +34,7 @@ public class Legs extends Limb {
         trackTimer--;
         if (trackTimer <= 0) {
             getOwner().leaveTracks();
-            trackTimer = 30;
+            trackTimer = 20;
         }
 
         switch ((int)getOwner().getRotation()) {

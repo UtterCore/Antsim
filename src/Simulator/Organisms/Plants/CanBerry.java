@@ -18,7 +18,7 @@ public class CanBerry extends Fruit {
     @Override
     public void eatTrigger(Creature creature) {
         //creature.die();
-        creature.clearFoodPreferences();
+        //creature.clearFoodPreferences();
         creature.addFoodPreference(EntityClass.Meat);
 
         creature.getLegs().setSpeed(creature.getLegs().getSpeed() * 1.5f);
