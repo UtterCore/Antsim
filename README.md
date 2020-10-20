@@ -5,7 +5,7 @@ This is a ecosystem simulator focusing on a group of ants. The ants rely on sour
 and greenflies. The ants will age, mate and eventually die from starvation or age.
 The simulator includes a connector for twitch so that viewers can control the simulator by using commands.
 
-# Here follows a list of commands available from either the console or the twitch chat
+# Commands (twitch chat or console)
 -
 
 # Installation/usage
