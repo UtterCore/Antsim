@@ -9,6 +9,8 @@ public enum EntityClass {
     Egg(),
     Larva(),
     Plant(),
+    Material(),
+    Earth(),
     Effect();
 
     EntityClass() {

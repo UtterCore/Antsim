@@ -25,6 +25,8 @@ public class Model implements UModel {
     public long fps;
 
     public int frameCount;
+
+    private Map map;
     public Model() {
 
         consumableTimer = CONSUMABLE_TIMER_MAX;
@@ -36,22 +38,31 @@ public class Model implements UModel {
 
         addEntity(new Background("./resources/bg.png"));
 
+        map = new Map(80, 44, 20);
 
-        for (int i = 0; i < 5; i++) {
+        Wall start = new Wall(null);
+        Wall end = new Wall(null);
+        map.setBlock(start, 5, 20);
+        map.setBlock(end, 50, 10);
+
+        findRoute(start, end);
+
+        /*
+        for (int i = 0; i < 2; i++) {
             createSmartAnt();
         }
+        */
 
+
+        /*
         addEntity(new SmartAntEgg(getRandomPos()));
 
         for (int i = 0;  i < 10; i++) {
             addEntity(new BlueberryBush(getRandomPos()));
         }
+        */
 
-        addEntity(new CanBerry(getRandomPos()));
-
-        addEntity(new Wall(new Position(520, 200)));
-        addEntity(new Wall(new Position(565, 200)));
-
+        /*
         //create borders
         for (int i = 0; i < 40; i++) {
             addEntity(new Wall(new Position(10, i * 40)));
@@ -68,6 +79,15 @@ public class Model implements UModel {
         for (int i = 0; i < 45; i++) {
             addEntity(new Wall(new Position(40 + (i*40), 850)));
         }
+        */
+    }
+
+    //TODO FIND ROUTE?!
+    private void findRoute(GameEntity start, GameEntity end) {
+    }
+
+    public Map getMap() {
+        return map;
     }
 
     private Position getRandomPos() {
@@ -221,8 +241,8 @@ public class Model implements UModel {
                     creature.update();
                     for (Tracks tracks : creature.getTracks()) {
                         if (!tracks.isInWorld()) {
-                            addEntity(tracks);
-                            tracks.setInWorld(true);
+                         //   addEntity(tracks);
+                           // tracks.setInWorld(true);
                         }
                     }
 
@@ -288,6 +308,8 @@ public class Model implements UModel {
                 }
 
 
+
+
                 for (int i = 0; i < effects.size(); i++) {
                     GameEntity effect = effects.get(i);
                     if (effect instanceof Effect) {
@@ -316,6 +338,7 @@ public class Model implements UModel {
         ArrayList<GameEntity> drawables = new ArrayList<>();
         drawables.addAll(backgrounds);
         drawables.addAll(items);
+        drawables.addAll(map.getBlocks());
         drawables.addAll(creatures);
         drawables.addAll(effects);
 

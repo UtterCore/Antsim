@@ -1,4 +1,5 @@
 package Simulator.Organisms.Creatures;
+import Simulator.Gravity;
 import UtterEng.Dimension;
 import UtterEng.GameEntity;
 import UtterEng.Position;
@@ -8,13 +9,20 @@ public class Organism extends GameEntity {
     private TouchSensor touch;
     private int energy;
     private boolean isEdible;
+    private Gravity gravity;
 
     public Organism(Position position, Dimension dimension, String spritePath) {
         super(position, dimension, spritePath);
 
         setIsTransparent(true);
         touch = new TouchSensor(this);
+        gravity = new Gravity(this);
     }
+
+    public Gravity getGravity() {
+        return gravity;
+    }
+
 
     public boolean isEdible() {
         return isEdible;
@@ -45,6 +53,5 @@ public class Organism extends GameEntity {
     }
 
     public void update() {
-
     }
 }

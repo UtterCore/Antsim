@@ -1,18 +1,20 @@
 package Simulator.Organisms.Creatures;
 
 import Simulator.EntityClass;
+import Simulator.Material;
 import Simulator.MessageLog;
 import Simulator.World;
 import UtterEng.Dimension;
 import UtterEng.GameEntity;
 import UtterEng.Position;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class SmartAnt extends Creature {
 
     public SmartAnt(Position position) {
-        super(position, new Dimension(20, 20), "./resources/linaant.png");
+        super(position, new Dimension(20, 20), "resources/linaant.png");
 
         tag = "smart_ant";
 
@@ -33,6 +35,7 @@ public class SmartAnt extends Creature {
 
     }
 
+
     @Override
     protected void updateCreatureStatus() {
         super.updateCreatureStatus();
@@ -41,7 +44,7 @@ public class SmartAnt extends Creature {
     @Override
     protected void agingTrigger() {
         if (getDimension().getWidth() <= 20 + getAge()) {
-            setDimension(new Dimension(20 + getAge(), 20 + getAge()));
+           // setDimension(new Dimension(20 + getAge(), 20 + getAge()));
         }
 
         Random random = new Random();
@@ -69,6 +72,17 @@ public class SmartAnt extends Creature {
 
     @Override
     protected void creatureBehavior() {
+
+        ArrayList<GameEntity> touchedObjects = getTouch().getTouchedObjects(EntityClass.Earth);
+
+        if (touchedObjects.size() > 0) {
+            {
+                Material touchedMaterial = (Material) touchedObjects.get(0);
+                if (touchedMaterial != null) {
+                    touchedMaterial.breakMaterial();
+                }
+            }
+        }
 
         if (getEnergy() <= 10) {
             die();

@@ -257,6 +257,12 @@ public abstract class Creature extends Organism {
         }
         return null;
     }
+
+    private void useAstarSearch(GameEntity entity) {
+
+
+
+    }
     protected GameEntity lookFor(EntityClass entityClass) {
         if (visibleObjects == null) {
             return null;
@@ -411,6 +417,8 @@ public abstract class Creature extends Organism {
 
     @Override
     public synchronized void update() {
+
+        getGravity().update();
 
         if (getEnergy() <= 0) {
             die();
